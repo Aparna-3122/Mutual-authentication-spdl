@@ -1,3 +1,6 @@
+# This protocol is modelled after the description presented in the paper
+# "SMAP: Secure Mutual Authentication Protocol for Internet of Medical Things Using Physical Unclonable Functions"
+#
 hashfunction H;
 const XOR:Function;
 const CON:Function;
