@@ -1,0 +1,181 @@
+hashfunction H;
+const XOR:Function;
+const CON:Function;
+const ADD:Function;
+const PUF:Function;
+usertype TimeStamp;
+const FEGenKey: Function; 
+const FEGenHd: Function;
+const FERep: Function;
+secret IDm;
+secret PWm;
+secret IDg;
+secret BIO;
+secret Rs;
+secret Cs;
+secret RN;
+secret key;
+secret Cs;
+secret Rs;
+secret RNs;
+secret Hs;
+secret key;
+secret Rsone;
+secret RNsd;
+macro km= FEGenKey(BIO);
+macro Hm= FEGenHd(BIO);
+macro Km=FERep(BIO,Hm);
+macro RPW=H(km,PWm);
+macro Rs=PUF(Cs);
+macro Rsone=PUF(Csone);
+macro ks= FEGenKey(PUF(Cs));
+macro Hs= FEGenHd(PUF(Cs));
+macro Ks=FERep(Rs,Hs);
+macro Rm=PUF(Cm);
+macro Rsone=PUF(Csone);
+macro S1=H(IDm,RN,Rm);
+macro S2= XOR(H(IDm,RN,Rm),RPW);
+macro S2star= XOR(H(IDm,RN,Rm),RPW);
+macro S3= (RN,Rm);
+macro S4=XOR(XOR(H(IDm,RN,Rm),RPW),key,IDg);
+macro R1= H(IDs,Rs);
+macro R2=XOR(H(IDs,Rs),ks);
+macro R2star=XOR(H(IDs,Rs),ks);
+macro R3= H(IDs,Rs,RNs);
+macro R4= XOR(H(IDs,Rs,RNs),(IDs,Cs));
+macro M1= XOR((RNm,IDm),(XOR(H(IDm,RN,Rm),RPW)));
+macro M2= H(IDm,RNm,(XOR(H(IDm,RN,Rm),RPW)),T1);
+macro M2star= H(IDm,RNm,(XOR(H(IDm,RN,Rm),RPW)),T1);
+macro S5= XOR(H(Rm,RNm,T2),RNg);
+macro S6=H(Rm,RNg,T2,(XOR(H(IDm,RN,Rm),RPW)));
+macro S6=H(Rm,RNg,T2,(XOR(H(IDm,RN,Rm),RPW)));
+macro S6star=H(Rm,RNg,T2,(XOR(H(IDm,RN,Rm),RPW)));
+macro S7=XOR(H(IDm,IDg,RNm,RNg),H(IDs,Rs,RNs),(Rs,T3));
+macro S7star=XOR(H(IDm,IDg,RNm,RNg),H(IDs,Rs,RNs),(Rs,T3));
+macro S8= XOR(H(IDs,RNg,H(IDs,Rs,RNs)),(RNsd,IDs));
+macro SKms= H(IDm,IDs,RNm,RNsd);
+macro S9= H(IDm,IDs,SKms,T4);
+macro S8star= XOR(H(IDs,RNg,H(IDs,Rs,RNs)),(RNsd,IDs));
+macro S10=XOR(H(RNm,RNg,H(IDm,RN,Rm),T5),(IDs,RNsd));
+macro S9star= H(IDm,IDs,SKms,T4);
+protocol MAuth(MP,GWN,SD){
+role MP
+{
+  secret IDm;
+  secret PWm;
+  secret BIO;
+  secret Rm;
+  secret RNm;
+  secret RPW;
+  fresh Cm;
+  secret RN;
+  secret RNg;
+  secret IDs;
+  secret RNsd;
+  fresh RNm:Nonce;
+  fresh T1: TimeStamp;
+  var T2: TimeStamp;
+  var T4: TimeStamp;
+  var T5: TimeStamp;
+  send_1(MP,GWN,IDm,Cm,Rm);
+  send_2(MP,GWN,IDm,RPW,Cm,Rm);
+  recv_3(GWN,MP,S2);
+  match(S2,S2star);                         //login successful
+  send_6(MP,GWN,M1,M2,Cm,T1);              //MSG1 of SMAP
+  recv_7(GWN,MP,S5,S6,T2);
+  recv_11(GWN,MP,S9,S10,T4,T5);
+  match(S9,S9star);
+  claim(MP,Secret,IDm);
+  claim(MP,Secret,RNm);
+  claim(MP,Secret,T1);
+  claim(MP,Secret,Rm);
+  claim(MP,Secret,RPW);
+  claim(MP,Secret,SKms);
+  claim(MP,Nisynch);
+  claim(MP,Alive);
+}
+role GWN
+{
+  secret RN;
+  secret IDg;
+  secret key;
+  secret RN;
+  secret IDs;
+  secret RNs;
+  secret Rs;
+  secret IDm;
+  secret PWm;
+  secret BIO;
+  secret Rm;
+  secret RN;
+  secret RPW;
+  secret Km;
+  secret Ks;
+  secret RNm;
+  secret Rsone;
+  secret RNg;
+  secret RNsd;
+  fresh RN:Nonce;
+  var Cm,Cs,Csone;
+  var T1: TimeStamp;
+  fresh T2: TimeStamp;
+  fresh T3: TimeStamp;
+  var T4: TimeStamp;
+  fresh T5: TimeStamp;
+  fresh RNg: Nonce;
+  recv_1(MP,GWN,IDm,Cm,Rm);
+  recv_2(MP,GWN,IDm, RPW , Cm,Rm);
+  send_3(GWN,MP,S2);
+  recv_4(SD,GWN,IDs,R2,Cs,Rs,Hs);
+  match(R2,R2star);
+  send_5(GWN,SD,R4);
+  recv_6(MP,GWN,M1,M2,Cm,T1);
+  send_7(GWN,MP,S5,S6,T2);             //MSG2 of SMAP
+  match(M2,M2star);
+  recv_8(SD,GWN,Csone);
+  send_9(GWN,SD,S7,T3);                //MSG3 of SMAP
+  recv_10(SD,GWN,S8,S9,T4);
+  match(S8,S8star);
+  send_11(GWN,MP,S9,S10,T4,T5);
+  claim(GWN,Secret,IDg);
+  claim(GWN,Secret,RNg);
+  claim(GWN,Secret,T2);
+  claim(GWN,Secret,T3);
+  claim(GWN,Secret,SKms);
+  claim(GWN,Secret,T5);
+  claim(GWN,Nisynch);
+  claim(GWN,Alive);
+}
+role SD
+{
+  secret IDs;
+  secret RNs;
+  secret Rs;
+  fresh Cs;
+  fresh Csone;
+  secret IDm;
+  secret IDg;
+  secret RNm;
+  secret RNsd;
+  secret RNg;
+  secret RNsd;
+  var T3: TimeStamp;
+  fresh T4: TimeStamp;
+  fresh RNsd:Nonce;
+  send_4(SD,GWN,IDs,R2,Cs,Rs,Hs);
+  recv_5(GWN,SD,R4);
+  send_8(SD,GWN,Csone);
+  recv_9(GWN,SD,S7,T3);
+  match(S7,S7star);
+  send_10(SD,GWN,S8,S9,T4);             //MSG4 of SMAP
+  claim(SD,Secret,SKms);
+  claim(SD,Secret,Rsone);
+  claim(SD,Secret,IDs);
+  claim(SD,Secret,T4);
+  claim(SD,Niagree);
+  claim(SD,Nisynch);
+  claim(SD,Alive);
+
+}
+};
+
