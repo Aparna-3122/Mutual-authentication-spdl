@@ -86,7 +86,7 @@ protocol MAuth(MP,GWN,SD){
         send_2(MP,GWN,IDm,RPW,Cm,Rm);
         recv_3(GWN,MP,S2);
         match(S2,S2star);                         //login successful
-        send_6(MP,GWN,M1,M2,Cm,T1);              //MSG1 of SMAP
+        send_6(MP,GWN,M1,M2,Cm,T1);              //Message1 of SMAP
         recv_7(GWN,MP,S5,S6,T2);
         recv_11(GWN,MP,S9,S10,T4,T5);
         match(S9,S9star);
@@ -135,13 +135,13 @@ protocol MAuth(MP,GWN,SD){
         match(R2,R2star);
         send_5(GWN,SD,R4);
         recv_6(MP,GWN,M1,M2,Cm,T1);
-        send_7(GWN,MP,S5,S6,T2);             //MSG2 of SMAP
+        send_7(GWN,MP,S5,S6,T2);              //Message2 of SMAP
         match(M2,M2star);
         recv_8(SD,GWN,Csone);
-        send_9(GWN,SD,S7,T3);                //MSG3 of SMAP
+        send_9(GWN,SD,S7,T3);                 //Message3 of SMAP
         recv_10(SD,GWN,S8,S9,T4);
         match(S8,S8star);
-        send_11(GWN,MP,S9,S10,T4,T5);
+        send_11(GWN,MP,S9,S10,T4,T5);         //Message5 of SMAP
         claim(GWN,Secret,IDg);
         claim(GWN,Secret,RNg);
         claim(GWN,Secret,T2);
@@ -172,7 +172,7 @@ protocol MAuth(MP,GWN,SD){
         send_8(SD,GWN,Csone);
         recv_9(GWN,SD,S7,T3);
         match(S7,S7star);
-        send_10(SD,GWN,S8,S9,T4);             //MSG4 of SMAP
+        send_10(SD,GWN,S8,S9,T4);              //Message4 of SMAP
         claim(SD,Secret,SKms);
         claim(SD,Secret,Rsone);
         claim(SD,Secret,IDs);
