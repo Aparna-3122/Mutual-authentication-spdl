@@ -1,0 +1,17 @@
+function [data] = collectResponses(fileName, rowNum) 
+fid = fopen(fileName);      
+if(fid<0) 
+    disp('Error: No such file !'); 
+    return; 
+end 
+dataRow = fgetl(fid);
+n = length(dataRow);          
+data = zeros(rowNum, n);      
+data(1,:) = dataRow;            
+for i = 2:rowNum 
+    dataRow = fgetl(fid); 
+    data(i, :) = dataRow;
+end 
+data = data - 32; 
+fclose(fid);                  
+end
