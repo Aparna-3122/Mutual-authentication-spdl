@@ -1,0 +1,23 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: SPDL code for puf based authentication
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Aparna
+    family-names: Singh
+    email: aparnasingh2211@gmail.com
+    affiliation: Netaji Subhas University of Technology
+    orcid: 'https://orcid.org/0000-0003-0829-4763'
+repository-code: >-
+  https://github.com/arian3101/Mutual-authentication-spdl/tree/main
+keywords:
+  - >-
+    Physical Unclonable Functions,Authentication,Internet of
+    Things
+license: Python-2.0
+version: '1.2'
