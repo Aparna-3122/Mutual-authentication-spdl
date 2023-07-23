@@ -1,18 +1,17 @@
 pragma solidity ^0.8.0;
-
 contract Regfun_m {
     mapping(string => string) verificationTable;
     event ComputationResultAdded(string indexed identity, bytes32 s4, bytes32 s2, string responseValue);
 
     // Add data to the verification table
-    function addToVerificationTable(string memory identity, string memory responseValue) public {
+    function add(string memory identity, string memory responseValue) public {
         verificationTable[identity] = responseValue;
     }
 
-    function isIdentityVerified(string memory identity) public view returns (bool) {
+    function isverified(string memory identity) public view returns (bool) {
         return bytes(verificationTable[identity]).length > 0;
     }
-    function generateRandomNumber() internal view returns (uint256) {
+    function randomNumber() internal view returns (uint256) {
         return uint256(keccak256(abi.encodePacked(block.timestamp, block.number, block.coinbase, block.gaslimit))) % 1000;
     }
     function concatenateStrings(string memory a, string memory b, string memory c) internal pure returns (string memory) {
