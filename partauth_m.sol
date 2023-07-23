@@ -7,12 +7,12 @@ contract VerificationContract {
         bytes32 M2start = keccak256(abi.encodePacked(identity, RNm, M1, S2, T));
         return (M2start == M2);
     }
-    function calculateAndSendS5S6(uint256 RNm, bytes32 response, uint256 RNg, uint256 T2) internal view returns (bytes32, bytes32, uint256) {
+    function sendS5S6(uint256 RNm, bytes32 response, uint256 RNg, uint256 T2) internal view returns (bytes32, bytes32, uint256) {
         bytes32 S5 = bytes32(RNm) ^ keccak256(abi.encodePacked(response, RNg, T2));
         bytes32 S6 = keccak256(abi.encodePacked(response, bytes32(RNg), S2, T2));
         return (S5, S6, T2);
     }
-    function calculateAndSendS7CsT3(bytes32 R5, bytes32 IDs, bytes32 Rs) external view returns (bytes32, bytes32, uint256) {
+    function sendS7CsT3(bytes32 R5, bytes32 IDs, bytes32 Rs) external view returns (bytes32, bytes32, uint256) {
         bytes32 RNgXORIDs = bytes32(uint256(R5)) ^ S2 ^ IDs;
         bytes32 R3 = R5 ^ RNgXORIDs;  
         bytes32[] memory allIdentities = new bytes32[](2);
@@ -30,7 +30,7 @@ contract VerificationContract {
         bytes32 S7 = Sstar ^ keccak256(abi.encodePacked(R3));
         return (S7, Cs, T3);
     }
-   function verifyAndCalculateS9S10T4T5(bytes32 S8, bytes32 S9, bytes32 IDs, uint256 RNm, uint256 RNg, bytes32 R3, uint256 T4, uint256 T5) external view returns (bytes32, bytes32, uint256, uint256) {
+   function verify(bytes32 S8, bytes32 S9, bytes32 IDs, uint256 RNm, uint256 RNg, bytes32 R3, uint256 T4, uint256 T5) external view returns (bytes32, bytes32, uint256, uint256) {
         bytes32 S8part = keccak256(abi.encodePacked(IDs, bytes32(RNg), R3));
         bytes32 S8start = keccak256(abi.encodePacked(bytes32(RNm), IDs, S8part));
         require(S8start == S8, "S8 verification failed");
