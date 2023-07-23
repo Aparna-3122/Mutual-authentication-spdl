@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 contract IdentityVerification {
     mapping(string => string) verificationTable;
 
-    function addToVerificationTable(string memory identity, string memory responseValue) public {
+    function add(string memory identity, string memory responseValue) public {
         verificationTable[identity] = responseValue;
     }
     function calculateHash(string memory value) internal pure returns (bytes32) {
@@ -21,7 +21,7 @@ contract IdentityVerification {
     function calculateR4(bytes32 R3, string memory identity, string memory challenge) internal pure returns (bytes32) {
         return R3 ^ calculateHash(concatenateStrings(identity, challenge, "", ""));
     }
-    function verifyAndCalculateR4(
+    function calculateR4(
         string memory identity,
         string memory response,
         uint256 randomValue,
